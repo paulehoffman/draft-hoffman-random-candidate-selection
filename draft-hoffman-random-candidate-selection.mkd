@@ -28,17 +28,19 @@ normative:
   UTF-8: RFC3629
 
 informative:
+  I-D.thomson-elegy-vrs:
 
 --- abstract
 
-This document describes a process to randomly select a subset of candidates from a larger set of candidates.
+This document describes a process to randomly select a subset of named candidates from a larger set of candidates.
 The process uses an unpredictable value that can be trusted by all candidates.
-It uses randomizing based on a hash function to make the description of the process easy to understand.
 
-This draft has a [GitHub repository](https://github.com/paulehoffman/draft-hoffman-genarea-random-candidate-selection).
+This draft has a [GitHub repository](https://github.com/paulehoffman/draft-hoffman-random-candidate-selection).
 Issues and pull requests can be made there.
 
 <!-- TO DO
+
+dates ("18 August 2022")
 
 -->
 
@@ -52,7 +54,7 @@ particularly if the people in the larger group don't all trust the administrator
 
 This document gives a simple, understandable process that can be done for groups and subsets of arbitrary size.
 The process is purposely transparent and reproducible.
-It works with any group of entities that nave names: people, companies, locations, dates ("18 August 2022"), and so on.
+It works with any group of entities that nave names: people, companies, locations, and so on.
 
 As a simple example, a future leadership committee will have a fixed size.
 The members of the committee will be selected from a large pool of volunteers. 
@@ -61,27 +63,29 @@ They can use the process in this document to make that selection in a way that i
 
 Due to the formatting used in this document, the reader is encouraged to read the HTML version, although the text version is still usable.
 
+See {{I-D.thomson-elegy-vrs}} for a similar method as described here.
+
 # Overview of the Process
 
 A few terms are used throughout this document:
 
 ceremony:
-: The act of collecting names, making the random selection, and publishing the entire process.
+: The act of collecting names, making the random selection, and publishing the entire process in a clear and transparent method.
 
 ceremony administrator (CA):
 : The person who performs the steps of the ceremony.
 
 candidate:
-: The person, organization, or other namable entity that is possibly being selected during the ceremony.
+: A person, organization, or other namable entity that is possibly being selected during the ceremony.
 
 candidate name:
-: The name selected by each candidate for the selection process.
-The candidate name is expressed as a string of Unicode characters {{Unicode}} in UTF-8 format {{UTF-8}}.
+: The name used by each candidate for the selection process.
+The candidate name is expressed as a string of Unicode characters in UTF-8 format {{Unicode}} {{UTF-8}}.
 
 difficult-to-predict string (_D_):
-: A publicly-visible string that is not known before the pool of candidates has been closed. 
+: A publicly-visible string that is only known after the pool of candidates has been closed. 
 Note that this is different from what is normally called a "random number" or a "random string".
-True random numbers or strings are designed to be  nearly impossible to predict, whereas _D_ in this process has weak (but sufficient) randomness.
+True random numbers or strings are designed to be nearly impossible to predict, whereas _D_ in this process has weak (but sufficient) randomness.
 
 ## Basic Steps
 
@@ -91,8 +95,8 @@ See {{specifics}} for more detail on the steps.
 1. The CA starts the ceremony by performing the following steps at the same time:
 
    - Announces an end date for when the pool will be complete.
-   - Announces a later date on which the difficult-to-predict string, _D_, will be selected.
-   - Announces the source where _D_ will be found.
+   - Announces a later date on which the difficult-to-predict string _D_ will be selected.
+   - Announces the source where _D_ will be found on that later date.
    - Announces the number of candidates that will be selected (called _S_).
    - Opens up the pool of candidates for submission.
 
@@ -103,7 +107,7 @@ See {{specifics}} for more detail on the steps.
 1. On the date for selecting _D_, the CA gets _D_ from the announced source.
 
 1. The CA calculates the hashes used to make the selection.
-They concatenate each candidate name with _D_ (name first, then _D_), uses the SHA-256 hash function {{SHA-2}} on the new string, and records the value of the output as a UTF-8 string.
+The CA concatenates each candidate name with _D_ (name first, then _D_), uses the SHA-256 hash function {{SHA-2}} on the resulting string, and records the value of the hash as a UTF-8 string.
 
 1. The CA arranges the set of hash values in alphabetic order from highest to lowest.
 They then select the _S_ candidates from the top of the list (that is, the names whose hash values are largest).
@@ -113,17 +117,16 @@ They then select the _S_ candidates from the top of the list (that is, the names
 ## Start of Ceremony
 
 Much of the trust in the selection process is based on the CA not being able to influence the selection.
-If the CA can choose, or influence, the value of _D_, they can establish the ordering of the differences of the integers.
+If the CA can choose, or even influence, the value of _D_, they can help establish the outcome of the selection.
 Similarly, if one or more of the candidates can influence the value of _D_, they can increase their chance of being selected.
 
-To make the process trustworthy, the value of _D_ must be unrelated to the CA or the candidates, and it must be selected after the list of candidates is completed
+To make the process trustworthy, the value of _D_ must be unrelated to the CA or the candidates, and it must be selected only after the list of candidates is completed.
 There are many sources of such values: stock market closing values, numbers chosen for large public lotteries, and so on.
-Section 3.1 of RFC 3797 lists many such sources.
+The most important things for a ceremony is that the source is announced before the ceremony starts, that all participants and viewers of a ceremony can find the source on the date specified by the CA, that all candidates believe that no candidate can influence _D_ on that date, and that everyone gets the same value when they go to the source for that date.
 
-The most important things for a ceremony is that the source is announced before the ceremony starts, that all participants and viewers of a ceremony can find the source on the date specified by the CA, and that everyone gets the same value when they go to the source for that day.
-
-If the CA chooses to use stock market closing values, a common open source of those values is the Wall Street Journal.
-For example, the FTSE 100 Index is a long-established index based on 100 stocks; it is sometimes known by its stock ticker as "UKX".
+The process described in this document uses the closing value for the FTSE 100 Index on the particular day selected by the CA.
+The FTSE 100 Index is a long-established index based on 100 stocks; it is sometimes known by its stock ticker as "UKX".
+A common open source of those values is the Wall Street Journal.
 The daily closing for the FTSE 100 Index at the Wall Street Journal can currently be found [here](https://www.wsj.com/market-data/quotes/index/UK/UKX/historical-prices).
 See {{unpred}} for a more complete discussion of choosing a source of unpredictability for this process.
 
@@ -134,10 +137,12 @@ The CA must check that the source they intende to use is still active, and still
 
 The CA is the sole arbitrator for whether a candidate is allowed to enter the pool.
 The CA is also the sole arbitrator of what name string (in UTF-8) the candidate can use in the pool.
-It is a good practice for the CA to have consistent rules for the names, such as only using ASCII space characters (U+0020), one space between each name part, no trailing spaces, and so on.
 
 The order that the candidates join the pool does not affect the outcome of the selection process.
 Said another way, the pool is kept as an unordered set of candidates, not an ordered list of candidates.
+
+It is a good practice for the CA to have consistent rules for the names, such as only using ASCII space characters (U+0020), only one space between each name part, no trailing spaces, and so on.
+These rules can be more difficult when the candidates are company names (such as whether the legal standing of the company such as "Inc." is included), but making consistent rules is not that difficult.
 
 ## Closing Submissions
 
@@ -151,26 +156,28 @@ The method for publishing the set of candidates is determined by the CA.
 ## Selecting _D_
 
 On the day that the CA announced for the selection of _D_, the CA goes the the source they announced and gets _D_.
-They encode _D_ as a UTF-8 string, which is fairly easy if the source is numeric.
-In the example of the FTSE 100 from {{selectioninfo}}, a closing value for the day announced at the beginning of the ceremony might be "7623.10".
+After the CA retrieves _D_ from the announced source, they encode _D_ as a UTF-8 string.
+In the example of the FTSE 100 Index, a closing value for the day announced at the beginning of the ceremony might be "7623.10".
 This would be encoded in UTF-8 as the string of characters whose value is U+373632372e3130.
 
 ## Calculating Hashes
 
 Different programming libraries have different requirements for the input to hash functions.
-{{sample-code}} uses the built-in `hashlib` library in Python, which requires that text strings come with a specified encoding.
+{{sample-code}} uses the built-in `hashlib` library in Python, which requires that text strings have a specified encoding.
 
 ## Selecting _S_ Candidates
 
-The process of selecting is simply taking the _S_ candidates whose hash value is.
+The process of selecting is simply taking the _S_ candidates whose hash value is highest.
 This can easily be determined by sorting the text representation of the hash values because in UTF-8 and ASCII, digits have lower codepoints than letters.
 
-To complete the process, the CA should publish all known data for the ceremony.
+To complete the process in a transparent manner, the CA should publish all known data for the ceremony.
 This includes _S_, _D_, the hexadecimal value of _D_, all of the information for each candidate, and the full list of selected candidates.
 {{namelist-out}} shows an example of what this publication might look like.
 
 
-# Handling Process Issues
+# Ceremony Considerations
+
+## Handling Process Issues
 
 Ceremonies don't always go as planned.
 For example, after a ceremony completes, one or more of the selected candidates might be removed from the selected set due to voluntary withdrawal or established rules (such as no two candidates being from the same geographic region).
@@ -178,12 +185,22 @@ In such cases, no new ceremony is needed: the CA simply selects the next candida
 
 Similarly, if after the selection process is completed, the size _S_ of the selected set needs to increase, the CA simply selects the next candidate(s) on the list that is ordered by hash values.
 
+## Weighted Selection
+
+In some selections, the CA wants to give candidates a weighted chance of being selected.
+For example, a legislature might select its leadership randomly, but weights the chance of being selected by the size of the membership of the political party in the legislature.
+The CA can create the pool with multiple names for each party, giving each name a number.
+
+For example, assume a legislature has 27 members of the Orange party, 20 members of the Yellow party, and 7 members of the Green party.
+The CA could create a pool consisting of the names "Orange1", "Orange2", ... "Orange27", "Yellow1", "Yellow2", ... "Yellow20", "Green1", "Green2", ... "Green7".
+The selected party would be the one whose name appears in the first name of the list of hashes.
+
 
 # Sample Code {#sample-code}
 
 The following is a list of figures for an implementation of the procedure shown in this document.
 
-- The Python script in {{python}} implements the algorithm from this document.
+- The Python script in {{the-program}} implements the algorithm from this document.
 - The file that contains the list of names is shown in {{namelist}}. (The names are the winners of the Nobel laureates in Literature for 2016 through 2021.)
 - A file showing the UTF-8 representation of the names from {{namelist}} is shown in {{namedisplay}}. This file is suitable for showing to the candidates.
 - The file that contains the _S_ and _D_ on separate lines is shown in {{selectioninfo}}.
@@ -192,7 +209,7 @@ The following is a list of figures for an implementation of the procedure shown 
 ~~~
 {::include ./candidate-selection.py}
 ~~~
-{: #python title="Example Python code for this procedure" }
+{: #the-program title="Example Python code for this procedure" }
 
 ~~~
 {::include ./namelist}
@@ -223,12 +240,12 @@ This document has no IANA considerations.
 # Security Considerations
 
 The value _D_ used in this process is explicitly not cryptographically strong; in fact, it might provide only a few bits of randomness.
-For example, stock indexes that contain many stocks might be predictable after the third digit from the right, meaning that they only have randomness of about 10 bits.
+A stock index like the FTSE 100 Index that contain many stocks might be predictable after the third digit from the right, meaning that they only have randomness of about 10 bits.
 A candidate who has a lot of leeway in choosing their name can possibly increase their chance of being selected by as much as 0.1% with such source of randomness.
-If the CA feels that candidates have too much leeway in selecting their names and is concerned about candidates gaming the ceremony even to that tiny extent, that CA needs to choose a source for _D_ with more randomness.
 
+If the CA feels that candidates have too much leeway in selecting their names and is concerned about candidates gaming the ceremony even to that tiny extent, that CA needs to choose a source for _D_ with more randomness.
 Such selection is outside the scope of this document because it would make the process more complicated or less understandable.
-Instead, this document relies on the CA to only allow sensible representation of candidate names and to accept a tiny chance that candidates can both predict _D_ and be able to change the name they use to reflect that predicted value.
+Instead, this document relies on the CA to only allow sensible representation of candidate names and to accept a tiny chance that candidates can both predict _D_ and be able to change the name they use to reflect that predicted value with more than a 0.1% chance of success.
 
 --- back
 

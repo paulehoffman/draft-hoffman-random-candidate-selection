@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Program to randomly select some candidates from a group
-#  See draft-hoffman-genarea-reandom-candidate-selection
+#  See draft-hoffman-reandom-candidate-selection
 
 import hashlib, sys
 from pathlib import Path
@@ -16,22 +16,22 @@ if len(sys.argv) == 1:
     "the selection file, on the command line. Exiting.")
 candidate_path = Path(sys.argv[1])
 if not candidate_path.exists():
-  exit(f"The file {str(candidate_path)} does not exist. Exiting.")
+  exit(f"The file {str(candidate_path)} doesn't exist. Exiting.")
 try:
   candidate_f = candidate_path.open(mode="rt", encoding="utf8")
 except:
-  exit("The candidates file do not appear to be in UTF-8. Exiting.")
+  exit("The candidates file doesn't appear to be in UTF-8. Exiting.")
 candidate_lines = candidate_f.read().splitlines()
 # See if there is a second file for selecting
 if len(sys.argv) == 3:
   run_including_selection = True
   selection_path = Path(sys.argv[2])
   if not selection_path.exists():
-    exit(f"The file {str(selection_path)} does not exist. Exiting.")
+    exit(f"The file {str(selection_path)} doesn't exist. Exiting.")
   try:
     selection_f = selection_path.open(mode="rt", encoding="utf8")
   except:
-    exit("The selection file does not appear to be UTF-8. Exiting.")
+    exit("The selection file doesn't appear to be UTF-8. Exiting.")
   selection_lines = selection_f.read().splitlines()
   # Extract D and S from the selection file
   S_str = selection_lines[0]
@@ -40,6 +40,7 @@ if len(sys.argv) == 3:
   except:
     print(f"The first line of the selection file, '{S_str}', " + \
       "is not an integer. Exiting.")
+  # D_str is the string for D, D_hex is the hex version for display
   D_str = selection_lines[1]
   D_hex = hexify(D_str)
 else:
@@ -65,7 +66,9 @@ if run_including_selection:
   print(f" U+{D_hex}\n")
   print("Candidate information, sorted by hash of name including D")
   selected = []
+  # Sort by the hex of C_with_D_hash
   for this_info in sorted(C_info, key=lambda a: a[4], reverse=True):
+    # Decrement S for each name that is selected
     if S > 0:
       selected.append(this_info[0])
       S -= 1
