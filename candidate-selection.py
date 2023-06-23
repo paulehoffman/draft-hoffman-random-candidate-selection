@@ -63,7 +63,7 @@ for C_str in candidate_lines:
 if run_including_selection:
   print(f"S is {S}")
   print(f"D is \"{D_str}\"")
-  print(f" U+{D_hex}\n")
+  print(f" {D_hex}\n")
   print("Candidate information, sorted by hash of name including D")
   selected = []
   # Sort by the hex of C_with_D_hash
@@ -73,10 +73,10 @@ if run_including_selection:
       selected.append(this_info[0])
       S -= 1
     print(f"{this_info[2]}")
-    print(f" U+{this_info[3]}")
+    print(f" {this_info[3]}")
     print(f" {this_info[4]}")
   print("\nSelected:\n    " + "\n    ".join(selected))
 else:
   for this_info in C_info:
     print(f"{this_info[0]}")
-    print(f" U+{this_info[1]}")
+    print(f" {this_info[1]}")

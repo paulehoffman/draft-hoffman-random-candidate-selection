@@ -1,7 +1,7 @@
 ---
 title: Simple Random Candidate Selection 
 abbrev: Candidate Selection
-docname: draft-hoffman-random-candidate-selection-00
+docname: draft-hoffman-random-candidate-selection-01
 
 stand_alone: true
 v: 3
@@ -173,7 +173,7 @@ The method for publishing the set of candidates is determined by the CA.
 On the day that the CA announced for the selection of _D_, the CA goes the the source they announced and gets _D_.
 After the CA retrieves _D_ from the announced source, they encode _D_ as a UTF-8 string.
 In the example of the FTSE 100 Index, a closing value for the day announced at the beginning of the ceremony might be "7623.10".
-This would be encoded in UTF-8 as the string of characters whose value is U+373632372e3130.
+This would be encoded in UTF-8 as the string of characters whose hex value is 0x373632372e3130.
 
 ## Calculating Hashes
 
