@@ -40,8 +40,6 @@ Issues and pull requests can be made there.
 
 <!-- TO DO
 
-dates ("18 August 2022")
-
 -->
 
 --- middle
@@ -70,7 +68,7 @@ See {{I-D.thomson-elegy-vrs}} for a similar method as described here.
 A few terms are used throughout this document:
 
 ceremony:
-: The act of collecting names, making the random selection, and publishing the entire process in a clear and transparent method.
+: The act of collecting names into a pool, making a random selection from the pool, and publishing the entire process in a clear and transparent method.
 
 ceremony administrator (CA):
 : The person who performs the steps of the ceremony.
@@ -79,13 +77,16 @@ candidate:
 : A person, organization, or other namable entity that is possibly being selected during the ceremony.
 
 candidate name:
-: The name used by each candidate for the selection process.
+: The name used by each candidate in the pool.
 The candidate name is expressed as a string of Unicode characters in UTF-8 format {{Unicode}} {{UTF-8}}.
 
 difficult-to-predict string (_D_):
 : A publicly-visible string that is only known after the pool of candidates has been closed. 
-Note that this is different from what is normally called a "random number" or a "random string".
-True random numbers or strings are designed to be nearly impossible to predict, whereas _D_ in this process has weak (but sufficient) randomness.
+(Note that this is different from what is normally called a "random number" or a "random string".
+True random numbers or strings are designed to be nearly impossible to predict, whereas _D_ in this process has weak but sufficient randomness.)
+
+selection size (_S_):
+: The number of candidates that will be selected from the pool.
 
 ## Basic Steps
 
@@ -95,14 +96,14 @@ See {{specifics}} for more detail on the steps.
 1. The CA starts the ceremony by performing the following steps at the same time:
 
    - Announces an end date for when the pool will be complete.
-   - Announces a later date on which the difficult-to-predict string _D_ will be selected.
+   - Announces a later date on which _D_, the difficult-to-predict string, will be selected.
    - Announces the source where _D_ will be found on that later date.
-   - Announces the number of candidates that will be selected (called _S_).
+   - Announces _S_, the number of candidates that will be selected.
    - Opens up the pool of candidates for submission.
 
-1. Candidates submit their names to the pool until the closing date.
+1. Candidates submit their names to the pool until the closing date, and the CA puts the allowed names in the pool.
 
-1. On the closing date, the CA publishes the set of candidate names with the hexadecimal value of the UTF-8 encoding for each candidate name.
+1. On the closing date, the CA publishes the candidate names from the pool with the hexadecimal value of the UTF-8 encoding for each candidate name.
 
 1. On the date for selecting _D_, the CA gets _D_ from the announced source.
 
@@ -121,19 +122,33 @@ If the CA can choose, or even influence, the value of _D_, they can help establi
 Similarly, if one or more of the candidates can influence the value of _D_, they can increase their chance of being selected.
 
 To make the process trustworthy, the value of _D_ must be unrelated to the CA or the candidates, and it must be selected only after the list of candidates is completed.
-There are many sources of such values: stock market closing values, numbers chosen for large public lotteries, and so on.
 The most important things for a ceremony is that the source is announced before the ceremony starts, that all participants and viewers of a ceremony can find the source on the date specified by the CA, that all candidates believe that no candidate can influence _D_ on that date, and that everyone gets the same value when they go to the source for that date.
+
+### Use of the FTSE 100 Index
 
 The process described in this document uses the closing value for the FTSE 100 Index on the particular day selected by the CA.
 The FTSE 100 Index is a long-established index based on 100 stocks; it is sometimes known by its stock ticker as "UKX".
 A common open source of those values is the Wall Street Journal.
 The daily closing for the FTSE 100 Index at the Wall Street Journal can currently be found [here](https://www.wsj.com/market-data/quotes/index/UK/UKX/historical-prices).
-See {{unpred}} for a more complete discussion of choosing a source of unpredictability for this process.
 
 Note that the location for sources of daily closing values can change over time.
 The CA must check that the source they intende to use is still active, and still available when the ceremony starts.
 
-## Name Submission
+### Other Public Sources of Randomness
+
+Although the procedure in this document uses the FTSE 100 Index as a public source of randomness, there are many other sources that can be used by a CA, as long as the source chosen is trusted by the candidates.
+There are many other stock indexes with enough stocks in them to make prediction of the exact value have less than a 0.1% chance.
+Having said that, using a future price of a single stock is probably not a good public source of randomness because candidates are likely to trust the variability of that less than the variability of a basket of stocks.
+
+Some systems that use public sources of randomness use the results of an unrelated lottery, such as the type of lotteries that many countries hold.
+These are probably trusted by candidates not be able to be manipulated.
+However, lotteries normally are a set of numbers between 1 and 100, often five or more such numbers.
+If the CA uses such a lottery for this procedure, they need to specify how the numbers from the lottery of the chosen date will be combined, including whether or not the numbers from 1 to 9 need to be preceded by a "0" character.
+
+There are other public sources of randomness, such as cameras pointed at lava lamps and so on.
+These are probably not good choices for the type of ceremony described in this document because the operators of such sources are not publicly trusted entities.
+
+## Name Submission and Pool Creation
 
 The CA is the sole arbitrator for whether a candidate is allowed to enter the pool.
 The CA is also the sole arbitrator of what name string (in UTF-8) the candidate can use in the pool.
@@ -144,9 +159,9 @@ Said another way, the pool is kept as an unordered set of candidates, not an ord
 It is a good practice for the CA to have consistent rules for the names, such as only using ASCII space characters (U+0020), only one space between each name part, no trailing spaces, and so on.
 These rules can be more difficult when the candidates are company names (such as whether the legal standing of the company such as "Inc." is included), but making consistent rules is not that difficult.
 
-## Closing Submissions
+## Closing Submissions to the Pool
 
-At the closing of submissions, the CA verifies that the length of the set of candidates in the pool is larger than _S_. 
+At the closing of submissions, the CA verifies that the number of candidates in the pool is larger than _S_. 
 If the length is the same as _S_, the rest of the steps are unneeded (and could be confusing), because all candidates will automatically be selected.
 If the length is shorter than _S_, the ceremony stops because there are too few candidates.
 
@@ -175,9 +190,7 @@ This includes _S_, _D_, the hexadecimal value of _D_, all of the information for
 {{namelist-out}} shows an example of what this publication might look like.
 
 
-# Ceremony Considerations
-
-## Handling Process Issues
+# Handling Ceremony Process Issues
 
 Ceremonies don't always go as planned.
 For example, after a ceremony completes, one or more of the selected candidates might be removed from the selected set due to voluntary withdrawal or established rules (such as no two candidates being from the same geographic region).
@@ -185,7 +198,7 @@ In such cases, no new ceremony is needed: the CA simply selects the next candida
 
 Similarly, if after the selection process is completed, the size _S_ of the selected set needs to increase, the CA simply selects the next candidate(s) on the list that is ordered by hash values.
 
-## Weighted Selection
+# Performing a Weighted Selection
 
 In some selections, the CA wants to give candidates a weighted chance of being selected.
 For example, a legislature might select its leadership randomly, but weights the chance of being selected by the size of the membership of the political party in the legislature.
@@ -195,6 +208,23 @@ For example, assume a legislature has 27 members of the Orange party, 20 members
 The CA could create a pool consisting of the names "Orange1", "Orange2", ... "Orange27", "Yellow1", "Yellow2", ... "Yellow20", "Green1", "Green2", ... "Green7".
 The selected party would be the one whose name appears in the first name of the list of hashes.
 
+
+# IANA Considerations
+
+This document has no IANA considerations.
+
+
+# Security Considerations
+
+The value _D_ used in this process is explicitly not cryptographically strong; in fact, it might provide only a few bits of randomness.
+The FTSE 100 Index might be predictable after the third digit from the right, but not the last three digits, meaning that they only have randomness of about 10 bits.
+The value of _D_ is concatenated into each candidate string before the whole string is hashed, so incorrectly predicting even one character of _D_ completely changes the value of the hash for comparison.
+
+Because of this, a candidate who has a lot of leeway in choosing their name can possibly increase their chance of being selected by as much as 0.1% with such source of randomness.
+The procedure in this document assumes that candidates have very little leeway in choosing their names; the CA must accept each name before it is put into the pool.
+The combination of the limited leeway for choosing the names in the pool and the necessity to predict _D_ exactly in order to gain any benefit means that _D_ needs much less randomness that a random number that would be used during encryption or authentication.
+
+--- back
 
 # Sample Code {#sample-code}
 
@@ -232,28 +262,3 @@ The following is a list of figures for an implementation of the procedure shown 
 {: #namelist-out title="Output of running the program on the list of names and selection information" }
 
 
-# IANA Considerations
-
-This document has no IANA considerations.
-
-
-# Security Considerations
-
-The value _D_ used in this process is explicitly not cryptographically strong; in fact, it might provide only a few bits of randomness.
-A stock index like the FTSE 100 Index that contain many stocks might be predictable after the third digit from the right, meaning that they only have randomness of about 10 bits.
-A candidate who has a lot of leeway in choosing their name can possibly increase their chance of being selected by as much as 0.1% with such source of randomness.
-
-If the CA feels that candidates have too much leeway in selecting their names and is concerned about candidates gaming the ceremony even to that tiny extent, that CA needs to choose a source for _D_ with more randomness.
-Such selection is outside the scope of this document because it would make the process more complicated or less understandable.
-Instead, this document relies on the CA to only allow sensible representation of candidate names and to accept a tiny chance that candidates can both predict _D_ and be able to change the name they use to reflect that predicted value with more than a 0.1% chance of success.
-
---- back
-
-# Sources of Unpredictability {#unpred}
-
-This is a place-holder for a more complete discussion.
-
-- Why 10 bits is enough
-- Use of well-known stock indexes instead of national lotteries
-- A bit of history of the FTSE 100
-- Analysis of actual randomness in the FTSE 100
