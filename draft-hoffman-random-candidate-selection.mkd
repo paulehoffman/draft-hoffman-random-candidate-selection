@@ -52,7 +52,7 @@ particularly if the people in the larger group don't all trust the administrator
 
 This document gives a simple, understandable process that can be done for groups and subsets of arbitrary size.
 The process is purposely transparent and reproducible.
-It works with any group of entities that nave names: people, companies, locations, and so on.
+It works with any group of entities that have names: people, companies, locations, and so on.
 
 As a simple example, a future leadership committee will have a fixed size.
 The members of the committee will be selected from a large pool of volunteers. 
