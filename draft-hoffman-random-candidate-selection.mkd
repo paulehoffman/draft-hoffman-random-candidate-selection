@@ -132,7 +132,7 @@ A common open source of those values is the Wall Street Journal.
 The daily closing for the FTSE 100 Index at the Wall Street Journal can currently be found [here](https://www.wsj.com/market-data/quotes/index/UK/UKX/historical-prices).
 
 Note that the location for sources of daily closing values can change over time.
-The CA must check that the source they intende to use is still active, and still available when the ceremony starts.
+The CA must check that the intended source is still active, and still available when the ceremony starts.
 
 Values from the FTSE 100 Index in this procedure are always encoded as four digits, followed by a period character (U+002E), followed by two more digits, such as:
 
