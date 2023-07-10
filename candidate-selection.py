@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Program to randomly select some candidates from a group
-#  See draft-hoffman-reandom-candidate-selection
+#  See draft-hoffman-random-candidate-selection
 
 import hashlib, sys
 from pathlib import Path
@@ -10,7 +10,7 @@ from pathlib import Path
 def hexify(in_str):
   return "".join([hex(c)[2:] for c in in_str.encode("utf8")])
 
-# Santity check the input files given on the command line
+# Sanity check the input files given on the command line
 if len(sys.argv) == 1:
   exit("Must give the name of the candidate file, and possibly " + \
     "the selection file, on the command line. Exiting.")
