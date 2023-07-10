@@ -233,7 +233,11 @@ The value _D_ used in this process is explicitly not cryptographically strong; i
 The FTSE 100 Index might be predictable after the third digit from the right, but not the last three digits, meaning that they only have randomness of about 10 bits.
 The value of _D_ is concatenated into each candidate string before the whole string is hashed, so incorrectly predicting even one character of _D_ completely changes the value of the hash for comparison.
 
-Because of this, a candidate who has a lot of leeway in choosing their name can possibly increase their chance of being selected by as much as 0.1% with such source of randomness.
+A cryptographic hash function like SHA-256 has the property that changing any individual bit of the input will change every bit in the output with a 50% chance, regardless of the position of the bit in the input.
+Appending a small amount of randomness at the end of the input is just as effective as prepending the randomness at the beginning of the input nd just as effective as mixing the randomness throughout the input.
+The procedure in this document appends the string from the FTSE 100 Index at the end of the candidate name because it makes viewing the pre-hashed result easier while still causing the maximum change to the resulting hash value.
+
+A candidate who has a lot of leeway in choosing their name can possibly increase their chance of being selected by as much as 0.1% with such source of randomness.
 The procedure in this document assumes that candidates have very little leeway in choosing their names; the CA must accept each name before it is put into the pool.
 The combination of the limited leeway for choosing the names in the pool and the necessity to predict _D_ exactly in order to gain any benefit means that _D_ needs much less randomness that a random number that would be used during encryption or authentication.
 
