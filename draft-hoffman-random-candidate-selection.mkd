@@ -59,6 +59,8 @@ The members of the committee will be selected from a large pool of volunteers.
 Someone is in charge of collecting the names of the volunteers and making a randomized selection among them for the leadership committee.
 They can use the process in this document to make that selection in a way that is both provably random and understandable.
 
+As described later in this document, the process can also be used for weighted selections ({{weighted}}) and for randomly sorting lists of candidates ({{rand-ord}}).
+
 Due to the formatting used in this document, the reader is encouraged to read the HTML version, although the text version is still usable.
 
 See {{I-D.thomson-elegy-vrs}} for a similar method as described here.
@@ -211,15 +213,20 @@ In such cases, no new ceremony is needed: the CA simply selects the next candida
 Similarly, if after the selection process is completed, the size _S_ of the selected set needs to increase, the CA simply selects the next candidate(s) on the list that is ordered by hash values.
 
 
-# Performing a Weighted Selection
+# Performing a Weighted Selection of Candidates {#weighted}
 
-In some selections, the CA wants to give candidates a weighted chance of being selected.
+In some candidate selections, the CA wants to give candidates a weighted chance of being selected.
 For example, a legislature might select its leadership randomly, but weights the chance of being selected by the size of the membership of the political party in the legislature.
 The CA can create the pool with multiple names for each party, giving each name a number.
 
 For example, assume a legislature has 27 members of the Orange party, 20 members of the Yellow party, and 7 members of the Green party.
 The CA could create a pool consisting of the names "Orange1", "Orange2", ... "Orange27", "Yellow1", "Yellow2", ... "Yellow20", "Green1", "Green2", ... "Green7".
 The selected party would be the one whose name appears in the first name of the list of hashes.
+
+# Performing a Random Ordering of Candidates {#rand-ord}
+
+Some use cases do not involve a selection of candidates from a larger list, but instead sorting the list of candidates randomly.
+The process given in this document can be easily used to do this: set _S_ to the size of the pool, peform the steps of the ceremony, and create the output list in the last step as all _S_ candidates in alphabetic order from highest to lowest of the hash values.
 
 
 # IANA Considerations
