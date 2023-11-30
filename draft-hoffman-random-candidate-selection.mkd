@@ -1,7 +1,7 @@
 ---
 title: Simple Random Candidate Selection 
 abbrev: Candidate Selection
-docname: draft-hoffman-random-candidate-selection-02
+docname: draft-hoffman-random-candidate-selection-03
 
 stand_alone: true
 v: 3
